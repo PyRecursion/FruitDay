@@ -1,0 +1,42 @@
+{% extends 'login.html' %}
+{% block head %}
+    <h1 id="welcome">注册</h1>
+    {% endblock %}
+{% block register %}
+    <form action="/reg" method="post">
+    {% csrf_token %}
+        <p class="p1">账户注册</p>
+        <p>手机号:<input id="ckphone" type="text" name="uphone" style="width:200px"></p>
+        <p id="show"></p>
+        <p>用户名:<input type="text" name="uname" style="width:200px"></p>
+        <p>密&nbsp&nbsp&nbsp码:<input type="password" style="width:200px" name="upwd"></p>
+        <p>确认密码:<input type="password" style="width:200px" name="upwd"></p>
+        <p>邮箱:<input type="email" name="uemail" style="width:200px"></p>
+        <p><button id="submit" >注册并登录</button></p>
+    </form>
+    <script>
+    $(function () {
+        $('#ckphone').blur(function () {
+            var url="/ckphone?data="+$(this).val();
+            console.log(url);
+            $.get(url,
+            function (resdata) {
+                console.log(resdata);
+                if (resdata.flag==0){
+                    $("#submit").click(function () {
+                        alert('手机号已存在,请重新输入')
+
+                    })
+                }else {
+                    $("#submit").style="submit"
+                }
+                $('#show').text(resdata.msg)
+            },'json')
+
+        })
+        
+    })
+
+
+    </script>
+{% endblock %}

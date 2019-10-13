@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>我的第一个网页</title>
+	<meta charset="utf-8">
+	<!--设置选项卡小图标-->
+	<link rel="short icon" type="image/x-icon" href="/static/images/easy.ico">
+	<link rel="stylesheet" type="text/css" href="/static/css/index.css">
+	<script src="/static/js/jquery-1.11.3.js"></script>
+
+</head>
+
+
+<body>
+	<!-- 1. 导航-->
+	<div id="navigate">
+		<!-- 左侧导航 -->
+		<div id="leftnav">
+			<ul>	
+				<li class="c1"><span class="addr">上海</span>
+					<ul class="select">
+						<li>北京</li>
+						<li>广州</li>
+						<li>杭州</li>
+						<li>深圳</li>
+					</ul>	
+				</li>	
+				<li style="padding-left: 0px;"> <div id="triangle"></div> </li>
+				<li>满百包邮(环郊内)</li>
+				<li><a href="/static/#" style="color: green">星夜达</a></li>
+			</ul>
+		</div>
+
+		<!-- 右侧导航 -->
+		<div id="rightnav">
+			<ul>
+				<li><a href="#">手机果园</a></li>
+				<li>|</li>
+				<li><a href="#">券卡兑换</a></li>
+				<li>|</li>
+				<li><a href="#">果园公告</a></li>
+				<li>|</li>
+				<li><a href={% url "reg" %}>[注册有惊喜]</a></li>
+                {% if user_name %}
+                <li>欢迎,{{ user_name }},<a href="/logout">退出</a></li>
+                {% else %}
+                <li><a href={% url "login" %}>[登陆]</a></li>
+                {% endif %}
+				
+			</ul>
+		</div>
+	
+	</div>
+	
+	<!-- 2. 横幅-->
+	<div id="banner">
+		<img  src="/static/images/banner3.jpg">
+		<img  src="/static/images/banner2.jpg">
+		<img  src="/static/images/banner1.jpg">
+	</div>
+	
+	<!--3.推荐-->
+	<div id="recommend">
+		<img src="/static/images/2ba20598135dbba5e97d241ebfa167d9.jpg">
+		<img src="/static/images/25af37592bf484fbeaef1cc4ff1e09c7.jpg">
+		<img src="/static/images/904419aa2e364412b3c07c3cbda24ef9.jpg">	
+	</div>
+	<!--4.主体-->
+
+    <script>
+        $(function () {
+            $.get("/goodsinfo",function (resdata) {
+                $.each(resdata,function(index,obj){
+                    var html='<div id="main"> <div class="gifticket"> <img src=/'+obj.type.picture+'> <span class="more">更多>></span> </div> <div class="items"> <ul>'
+                    $.each(obj.goods,function(index,goods){
+                        html+='<li><p><img src=/'+goods.picture+'></p>\
+					<a href="javascript:add_goods('+goods.id+')"><img src="/static/images/cart.png" class="cart"></a>\
+					<span>'+goods.title+'</span><br>\
+					<span>'+goods.price+'/2.5kg</span>\
+				</li>'
+                    });
+                    html+='</ul></div></div>';
+                    $('body').append(html)
+                });
+            },"json")
+        })
+    </script>
+    <script>
+        function add_goods(id) {
+            $.get("/check_login?id="+id,function (resdata) {
+                if (resdata.flag==0){
+                    alert("请先登录")
+                }else {
+                    alert("添加成功")
+
+                }
+
+            },'json')
+
+        }
+    </script>
+{#	<div id="main">#}
+{#		<!-- 礼品卡券 -->#}
+{#		<div class="gifticket">#}
+{#			<img src="/static/images/t4.png">#}
+{#			<span class="more">更多>></span>#}
+{#		</div>#}
+{#		<!-- 商品 -->#}
+{#		<div class="items">#}
+{#			<ul>#}
+{#				<li><p>#}
+{#					<img src="/static/images/1-270x270-2114-226C8S26.jpg">#}
+{#					</p>#}
+{#					<img src="/static/images/cart.png" class="cart">#}
+{#					<span>欢乐时光水果礼篮</span><br>#}
+{#					<span>￥59.8/2.5kg</span>#}
+{#				</li>#}
+{#				<li><p>#}
+{#					<img src="/static/images/1-270x270-2114-226C8S26.jpg">#}
+{#					</p>#}
+{#					<img src="/static/images/cart.png" class="cart">#}
+{#					<span>欢乐时光水果礼篮</span><br>#}
+{#					<span>￥59.8/2.5kg</span>#}
+{#				</li>#}
+{#				<li><p>#}
+{#					<img src="/static/images/1-270x270-2114-226C8S26.jpg">#}
+{#					</p>#}
+{#					<img src="/static/images/cart.png" class="cart">#}
+{#					<span>欢乐时光水果礼篮</span><br>#}
+{#					<span>￥59.8/2.5kg</span>#}
+{#				</li>#}
+{#				<li><p>#}
+{#					<img src="/static/images/1-270x270-2114-226C8S26.jpg">#}
+{#					</p>#}
+{#					<img src="/static/images/cart.png" class="cart">#}
+{#					<span>欢乐时光水果礼篮</span><br>#}
+{#					<span>￥59.8/2.5kg</span>#}
+{#				</li>#}
+{#				<li><p>#}
+{#					<img src="/static/images/1-270x270-2114-226C8S26.jpg">#}
+{#					</p>#}
+{#					<img src="/static/images/cart.png" class="cart">#}
+{#					<span>欢乐时光水果礼篮</span><br>#}
+{#					<span>￥59.8/2.5kg</span>#}
+{#				</li>#}
+{#				<li><p>#}
+{#					<img src="/static/images/1-270x270-2114-226C8S26.jpg">#}
+{#					</p>#}
+{#					<img src="/static/images/cart.png" class="cart">#}
+{#					<span>欢乐时光水果礼篮</span><br>#}
+{#					<span>￥59.8/2.5kg</span>#}
+{#				</li>#}
+{#			</ul>#}
+{#		</div>#}
+{#	</div>#}
+
+
+	<!--5.尾部信息-->
+
+</body>
+<script src="/static/js/index.js"></script>
+
+</html>
